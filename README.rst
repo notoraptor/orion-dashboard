@@ -14,13 +14,13 @@ Installations
 
 This dashboard uses React and Carbon. You will need to install npm first, and then yarn.
 
-.. code-highlight:: console
+.. code-block:: console
 
    npm insall --global yarn
 
 Install all dependencies including Carbon.
 
-.. code-highlight:: console
+.. code-block:: console
 
    yarn
 
@@ -29,7 +29,7 @@ Host
 
 You can start the server with 
 
-.. code-highlight:: console
+.. code-block:: console
 
    yarn start
 
