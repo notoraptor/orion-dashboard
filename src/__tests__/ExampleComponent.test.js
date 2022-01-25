@@ -7,24 +7,24 @@ import { render, fireEvent, screen } from '@testing-library/react';
 test("Test clicking ExampleComponent's buttons", () => {
   render(<ExampleComponent />);
   // Check that span with default value exists.
-  screen.getByText(/Value is 100/i);
+  expect(screen.queryByText(/Value is 100/i)).toBeInTheDocument();
   // Get buttons
   const addButton = screen.getByText('add');
   const removeButton = screen.getByText('remove');
   // Test click on add button
   fireEvent.click(addButton);
   expect(screen.queryByText(/Value is 100/i)).toBeNull();
-  screen.getByText(/Value is 101/i);
+  expect(screen.queryByText(/Value is 101/i)).toBeInTheDocument();
   // Test another click on add button
   fireEvent.click(addButton);
   expect(screen.queryByText(/Value is 100/i)).toBeNull();
   expect(screen.queryByText(/Value is 101/i)).toBeNull();
-  screen.getByText(/Value is 102/i);
+  expect(screen.queryByText(/Value is 102/i)).toBeInTheDocument();
   // Test click on remove button
   fireEvent.click(removeButton);
   fireEvent.click(removeButton);
   fireEvent.click(removeButton);
   fireEvent.click(removeButton);
   fireEvent.click(removeButton);
-  screen.getByText(/Value is 97/i);
+  expect(screen.queryByText(/Value is 97/i)).toBeInTheDocument();
 });
