@@ -2,7 +2,6 @@ import React from 'react';
 
 import TrialTable from './TrialTable';
 
-
 const headers = [
   {
     key: 'id',
@@ -38,7 +37,7 @@ const rows = [
     created_on: '2020-12-01 05:05:05',
     updatedAt: 'Date',
     params: [],
-    results: [{'type': 'objective', 'name': 'loss', 'value':1}],
+    results: [{ type: 'objective', name: 'loss', value: 1 }],
   },
   {
     id: '2',
@@ -60,8 +59,8 @@ const rows = [
   },
 ];
 
-const getRowItems = (rows) =>
-  rows.map((row) => ({
+const getRowItems = rows =>
+  rows.map(row => ({
     ...row,
     id: row.id,
     experiment: row.experiment,
@@ -73,12 +72,14 @@ const getRowItems = (rows) =>
 
 const DatabasePage = () => {
   return (
-  <div className="bx--grid bx--grid--full-width bx--grid--no-gutter database-page">
-    <div className="bx--row database-page__r1">
-      <div className="bx--col-lg-16">
-        <TrialTable headers={headers} rows={getRowItems(rows)} />
+    <div className="bx--grid bx--grid--full-width bx--grid--no-gutter database-page">
+      <div className="bx--row database-page__r1">
+        <div className="bx--col-lg-16">
+          <TrialTable headers={headers} rows={getRowItems(rows)} />
+        </div>
       </div>
     </div>
-  </div>)};
+  );
+};
 
 export default DatabasePage;

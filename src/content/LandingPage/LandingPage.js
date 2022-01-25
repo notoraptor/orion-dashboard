@@ -26,7 +26,7 @@ const LandingPage = () => {
     <>
       <h4>Landing Page</h4>
     </>
-);
+  );
 };
 
 export default LandingPage;
