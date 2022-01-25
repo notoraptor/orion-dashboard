@@ -65,7 +65,6 @@ const headers = [
   },
 ];
 
-
 const rows = [
   {
     id: '1',

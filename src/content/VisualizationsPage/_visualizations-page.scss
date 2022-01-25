@@ -5,7 +5,6 @@
   padding-bottom: $spacing-05;
 }
 
-
 // GRID Test
 
 $feature-flags: (
@@ -17,7 +16,6 @@ $feature-flags: (
 //
 //// If you want to import the grid
 @import 'carbon-components/scss/globals/grid/grid';
-
 
 .plot-tile-bck {
   // margin-top: $spacing-09;

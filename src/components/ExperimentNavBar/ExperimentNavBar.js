@@ -2,7 +2,7 @@ import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { CloseFilled16 } from '@carbon/icons-react';
 
-import { 
+import {
   SideNav,
   StructuredListWrapper,
   StructuredListHead,
@@ -11,7 +11,7 @@ import {
   StructuredListInput,
   StructuredListCell,
   StructuredListSkeleton,
-  Search
+  Search,
 } from 'carbon-components-react';
 
 import { settings } from 'carbon-components';
@@ -19,7 +19,7 @@ import { settings } from 'carbon-components';
 const { prefix } = settings;
 
 export const ExperimentNavBar = () => {
-  const structuredListBodyRowGenerator = (numRows) => {
+  const structuredListBodyRowGenerator = numRows => {
     return Array.apply(null, Array(numRows)).map((n, i) => (
       <StructuredListRow label key={`row-${i}`}>
         <StructuredListInput
@@ -49,25 +49,25 @@ export const ExperimentNavBar = () => {
     ));
   };
   return (
-  <SideNav
-    isFixedNav
-    expanded={true}
-    isChildOfHeader={false}
-    aria-label="Side navigation">
-    <StructuredListWrapper selection>
-      <StructuredListHead>
-        <StructuredListRow head>
-          <StructuredListCell head>{''}</StructuredListCell>
-          <StructuredListCell head>Experiment</StructuredListCell>
-          <StructuredListCell head>Status</StructuredListCell>
-        </StructuredListRow>
-      </StructuredListHead>
-      <StructuredListBody>
-        {structuredListBodyRowGenerator(4)}
-      </StructuredListBody>
-    </StructuredListWrapper>
-    <Search/>
-  </SideNav>
+    <SideNav
+      isFixedNav
+      expanded={true}
+      isChildOfHeader={false}
+      aria-label="Side navigation">
+      <StructuredListWrapper selection>
+        <StructuredListHead>
+          <StructuredListRow head>
+            <StructuredListCell head>{''}</StructuredListCell>
+            <StructuredListCell head>Experiment</StructuredListCell>
+            <StructuredListCell head>Status</StructuredListCell>
+          </StructuredListRow>
+        </StructuredListHead>
+        <StructuredListBody>
+          {structuredListBodyRowGenerator(4)}
+        </StructuredListBody>
+      </StructuredListWrapper>
+      <Search />
+    </SideNav>
   );
 };
 

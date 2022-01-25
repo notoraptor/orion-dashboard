@@ -3,7 +3,7 @@
 @import 'carbon-components/scss/globals/scss/typography.scss';
 @import 'carbon-components/scss/globals/scss/vars.scss';
 
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 @import './components/Info/info.scss';
 
@@ -13,4 +13,3 @@
 @import './content/VisualizationsPage/visualizations-page.scss';
 @import './content/DatabasePage/database-page.scss';
 @import './content/ConfigurationPage/configuration-page.scss';
-

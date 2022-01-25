@@ -13,7 +13,6 @@ import {
   TableExpandedRow,
 } from 'carbon-components-react';
 
-
 const TrialTable = ({ rows, headers }) => {
   return (
     <DataTable
