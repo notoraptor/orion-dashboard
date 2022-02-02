@@ -36,7 +36,7 @@ jobs:
           python-version: 3.8
       - name: Install an orion version supporting CORS
       - run: python -m pip install git+https://github.com/notoraptor/orion.git@8b2578803948a3fda31fa0ac6f475fe0f296aa95
-      - run: nohup orion serve -c .github/workflows/orion/config.txt &
+      - run: orion serve -c .github/workflows/orion/config.txt &
       # install
       - run: yarn
       # check files formatting using Carbon's `ci-check` script
