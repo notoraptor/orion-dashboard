@@ -1,7 +1,4 @@
 import axios from 'axios';
-// Use adapter to prevent "cross origin forbidden" error in tests
-// Ref (2022/02/01): https://github.com/axios/axios/issues/1418
-import adapter from 'axios/lib/adapters/http';
 
 export function queryServer(path, params = undefined) {
   return new Promise((resolve, reject) => {
@@ -12,7 +9,6 @@ export function queryServer(path, params = undefined) {
       url: apiCall,
       responseType: 'json',
       responseEncoding: 'utf8',
-      adapter: adapter,
     };
     if (params !== undefined) config.params = params;
     axios(config)
