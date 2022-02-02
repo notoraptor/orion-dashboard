@@ -1,6 +1,7 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { CloseFilled16 } from '@carbon/icons-react';
+import { queryServer } from '../../utils/queryServer';
 
 import {
   SideNav,
@@ -10,7 +11,6 @@ import {
   StructuredListRow,
   StructuredListInput,
   StructuredListCell,
-  StructuredListSkeleton,
   Search,
 } from 'carbon-components-react';
 
@@ -18,9 +18,42 @@ import { settings } from 'carbon-components';
 
 const { prefix } = settings;
 
-export const ExperimentNavBar = () => {
-  const structuredListBodyRowGenerator = numRows => {
-    return Array.apply(null, Array(numRows)).map((n, i) => (
+export class ExperimentNavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      experiments: null,
+    };
+  }
+  render() {
+    return (
+      <SideNav
+        isFixedNav
+        expanded={true}
+        isChildOfHeader={false}
+        aria-label="Side navigation">
+        <StructuredListWrapper selection>
+          <StructuredListHead>
+            <StructuredListRow head>
+              <StructuredListCell head>{''}</StructuredListCell>
+              <StructuredListCell head>Experiment</StructuredListCell>
+              <StructuredListCell head>Status</StructuredListCell>
+            </StructuredListRow>
+          </StructuredListHead>
+          <StructuredListBody>
+            {this.state.experiments === null
+              ? 'Loading experiments ...'
+              : this.state.experiments.length === 0
+              ? 'No experiment available'
+              : this.renderExperimentsList(this.state.experiments)}
+          </StructuredListBody>
+        </StructuredListWrapper>
+        <Search labelText="Search experiment" />
+      </SideNav>
+    );
+  }
+  renderExperimentsList(experiments) {
+    return experiments.map((experiment, i) => (
       <StructuredListRow label key={`row-${i}`}>
         <StructuredListInput
           id={`row-${i}`}
@@ -36,7 +69,9 @@ export const ExperimentNavBar = () => {
             <title>select an option</title>
           </CloseFilled16>
         </StructuredListCell>
-        <StructuredListCell>Name {i}</StructuredListCell>
+        <StructuredListCell>
+          [{i + 1}] {experiment}
+        </StructuredListCell>
         <StructuredListCell>
           <ProgressBar>
             <ProgressBar variant="success" now={35} key={1} />
@@ -47,28 +82,16 @@ export const ExperimentNavBar = () => {
         </StructuredListCell>
       </StructuredListRow>
     ));
-  };
-  return (
-    <SideNav
-      isFixedNav
-      expanded={true}
-      isChildOfHeader={false}
-      aria-label="Side navigation">
-      <StructuredListWrapper selection>
-        <StructuredListHead>
-          <StructuredListRow head>
-            <StructuredListCell head>{''}</StructuredListCell>
-            <StructuredListCell head>Experiment</StructuredListCell>
-            <StructuredListCell head>Status</StructuredListCell>
-          </StructuredListRow>
-        </StructuredListHead>
-        <StructuredListBody>
-          {structuredListBodyRowGenerator(4)}
-        </StructuredListBody>
-      </StructuredListWrapper>
-      <Search />
-    </SideNav>
-  );
-};
+  }
+  componentDidMount() {
+    queryServer('experiments')
+      .then(results => {
+        const experiments = results.map(experiment => experiment.name);
+        experiments.sort();
+        this.setState({ experiments });
+      })
+      .catch(error => this.setState({ experiments: [] }));
+  }
+}
 
 export default ExperimentNavBar;
