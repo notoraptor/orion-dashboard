@@ -1,7 +1,8 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { CloseFilled16 } from '@carbon/icons-react';
-import { queryServer } from '../../utils/queryServer';
+import { Backend } from '../../utils/queryServer';
+import { BackendContext } from '../../BackendContext';
 
 import {
   SideNav,
@@ -19,6 +20,7 @@ import { settings } from 'carbon-components';
 const { prefix } = settings;
 
 export class ExperimentNavBar extends React.Component {
+  static contextType = BackendContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -84,13 +86,17 @@ export class ExperimentNavBar extends React.Component {
     ));
   }
   componentDidMount() {
-    queryServer('experiments')
+    const backend = new Backend(this.context.address);
+    backend
+      .query('experiments')
       .then(results => {
         const experiments = results.map(experiment => experiment.name);
         experiments.sort();
         this.setState({ experiments });
       })
-      .catch(error => this.setState({ experiments: [] }));
+      .catch(error => {
+        this.setState({ experiments: [] });
+      });
   }
 }
 
