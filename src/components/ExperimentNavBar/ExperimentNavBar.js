@@ -25,7 +25,9 @@ export class ExperimentNavBar extends React.Component {
     super(props);
     this.state = {
       experiments: null,
+      search: '',
     };
+    this.onSearch = this.onSearch.bind(this);
   }
   render() {
     return (
@@ -43,18 +45,35 @@ export class ExperimentNavBar extends React.Component {
             </StructuredListRow>
           </StructuredListHead>
           <StructuredListBody>
-            {this.state.experiments === null
-              ? 'Loading experiments ...'
-              : this.state.experiments.length === 0
-              ? 'No experiment available'
-              : this.renderExperimentsList(this.state.experiments)}
+            {this.renderExperimentsList()}
           </StructuredListBody>
         </StructuredListWrapper>
-        <Search labelText="Search experiment" />
+        <Search
+          placeholder="Search experiment"
+          labelText="Search experiment"
+          onChange={this.onSearch}
+        />
       </SideNav>
     );
   }
-  renderExperimentsList(experiments) {
+  renderExperimentsList() {
+    if (this.state.experiments === null)
+      return this.renderMessageRow('Loading experiments ...');
+    if (!this.state.experiments.length)
+      return this.renderMessageRow('No experiment available');
+    // Apply search.
+    let experiments;
+    if (this.state.search.length) {
+      // String to search
+      experiments = this.state.experiments.filter(
+        experiment => experiment.toLowerCase().indexOf(this.state.search) >= 0
+      );
+      if (!experiments.length)
+        return this.renderMessageRow('No matching experiment');
+    } else {
+      // No string to search, display all experiments
+      experiments = this.state.experiments;
+    }
     return experiments.map((experiment, i) => (
       <StructuredListRow label key={`row-${i}`}>
         <StructuredListInput
@@ -85,6 +104,15 @@ export class ExperimentNavBar extends React.Component {
       </StructuredListRow>
     ));
   }
+  renderMessageRow(message) {
+    return (
+      <StructuredListRow>
+        <StructuredListCell />
+        <StructuredListCell>{message}</StructuredListCell>
+        <StructuredListCell />
+      </StructuredListRow>
+    );
+  }
   componentDidMount() {
     const backend = new Backend(this.context.address);
     backend
@@ -97,6 +125,9 @@ export class ExperimentNavBar extends React.Component {
       .catch(error => {
         this.setState({ experiments: [] });
       });
+  }
+  onSearch(event) {
+    this.setState({ search: event.target.value.toLowerCase() });
   }
 }
 
