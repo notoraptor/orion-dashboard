@@ -40,9 +40,7 @@ class PlotGrid extends React.Component {
   }
   renderRegret() {
     if (this.state.regret === null)
-      return `Loading regret visualization for experiment: ${
-        this.state.experiment
-      } ...`;
+      return `Loading regret plot for: ${this.state.experiment} ...`;
     if (this.state.regret === false) return `Nothing to display`;
     return (
       <RegretConst
@@ -53,7 +51,7 @@ class PlotGrid extends React.Component {
   }
   renderParallelCoordinates() {
     if (this.state.parallel_coordinates === null)
-      return `Loading parallel coordinates visualization for experiment: ${
+      return `Loading parallel coordinates plot for: ${
         this.state.experiment
       } ...`;
     if (this.state.parallel_coordinates === false) return 'Nothing to display';
@@ -66,9 +64,7 @@ class PlotGrid extends React.Component {
   }
   renderLPI() {
     if (this.state.lpi === null)
-      return `Loading LPI visualization for experiment: ${
-        this.state.experiment
-      }`;
+      return `Loading LPI plot for: ${this.state.experiment}`;
     if (this.state.lpi === false) return 'Nothing to display';
     return (
       <LocalParameterImportancePlot
@@ -77,17 +73,17 @@ class PlotGrid extends React.Component {
       />
     );
   }
-  async componentDidMount() {
+  componentDidMount() {
     const experiment = this.context.experiment;
     if (experiment !== null) {
-      console.log(`mount ${this.context.experiment}`);
-      await this.loadBackendData(experiment);
+      console.log(`Mounting experiment: ${this.context.experiment}`);
+      this.loadBackendData(experiment);
     }
   }
-  async componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     const experiment = this.context.experiment;
     if (this.state.experiment !== experiment) {
-      console.log(`update ${this.context.experiment}`);
+      console.log(`Updating experiment: ${this.context.experiment}`);
       if (experiment === null) {
         this.setState({
           experiment,
@@ -96,40 +92,40 @@ class PlotGrid extends React.Component {
           lpi: false,
         });
       } else {
-        await this.loadBackendData(experiment);
+        this.loadBackendData(experiment);
       }
     }
   }
-  async loadBackendData(experiment) {
-    const backend = new Backend(this.context.address);
-    let regret;
-    let parallel_coordinates;
-    let lpi;
-    try {
-      regret = await backend.query(`plots/regret/${experiment}`);
-      console.log('regret done ' + experiment);
-    } catch (error) {
-      regret = false;
-      console.log('regret fail ' + experiment);
-    }
-    try {
-      parallel_coordinates = await backend.query(
-        `plots/parallel_coordinates/${experiment}`
-      );
-      console.log('pc done ' + experiment);
-    } catch (error) {
-      parallel_coordinates = false;
-      console.log('pc fail ' + experiment);
-    }
-    try {
-      lpi = await backend.query(`plots/lpi/${experiment}`);
-      console.log('LPI done ' + experiment);
-    } catch (error) {
-      lpi = false;
-      console.log('LPI fail ' + experiment);
-    }
-    const keyCount = this.state.keyCount + 1;
-    this.setState({ experiment, regret, parallel_coordinates, lpi, keyCount });
+  loadBackendData(experiment) {
+    this.setState(
+      { experiment, regret: null, parallel_coordinates: null, lpi: null },
+      () => {
+        const backend = new Backend(this.context.address);
+        const promiseRegret = backend.query(`plots/regret/${experiment}`);
+        const promisePC = backend.query(
+          `plots/parallel_coordinates/${experiment}`
+        );
+        const promiseLPI = backend.query(`plots/lpi/${experiment}`);
+        Promise.allSettled([promiseRegret, promisePC, promiseLPI]).then(
+          results => {
+            const [resRegret, resPC, resLPI] = results;
+            const regret =
+              resRegret.status === 'fulfilled' ? resRegret.value : false;
+            const parallel_coordinates =
+              resPC.status === 'fulfilled' ? resPC.value : false;
+            const lpi = resLPI.status === 'fulfilled' ? resLPI.value : false;
+            const keyCount = this.state.keyCount + 1;
+            this.setState({
+              experiment,
+              regret,
+              parallel_coordinates,
+              lpi,
+              keyCount,
+            });
+          }
+        );
+      }
+    );
   }
 }
 
