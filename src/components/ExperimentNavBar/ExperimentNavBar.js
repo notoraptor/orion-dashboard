@@ -22,6 +22,7 @@ const { prefix } = settings;
 export class ExperimentNavBar extends React.Component {
   static contextType = BackendContext;
   constructor(props) {
+    // prop: onSelectExperiment: function(experiment)
     super(props);
     this.state = {
       experiments: null,
@@ -81,13 +82,13 @@ export class ExperimentNavBar extends React.Component {
           value={`row-${i}`}
           title={`row-${i}`}
           name="row-0"
-          defaultChecked={!i || null}
+          onChange={() => this.props.onSelectExperiment(experiment)}
         />
         <StructuredListCell>
           <CloseFilled16
             className={`${prefix}--structured-list-svg`}
             aria-label="unselect experiment">
-            <title>select an option</title>
+            <title>unselect experiment</title>
           </CloseFilled16>
         </StructuredListCell>
         <StructuredListCell>

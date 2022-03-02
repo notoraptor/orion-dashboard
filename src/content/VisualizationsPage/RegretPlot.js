@@ -1,6 +1,5 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import sizeMe from 'react-sizeme';
 
 const trace1 = {
   meta: {
@@ -877,12 +876,6 @@ const config = {
   responsive: true,
 };
 
-const on_hover = data => {
-  // Find PCP plot, and call hover.
-  // Lets first force fetch it.
-  console.log(data['points'][0]['customdata'][0]);
-};
-
 const RegretPlot = props => {
   return (
     <Plot
@@ -901,11 +894,6 @@ const RegretPlot = props => {
 class RegretConst extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.onHover);
-    this.onHover = props.onHover;
-    this.onUnhover = props.onUnhover;
-    this.divId = props.divId;
-    this.state = { data: [], layout: {}, frames: [], config: {} };
     this.myRef = React.createRef();
   }
 
@@ -913,14 +901,14 @@ class RegretConst extends React.Component {
     return (
       <Plot
         ref={this.myRef}
-        divId={this.divId}
-        data={data}
-        layout={layout}
+        divId={this.props.divId}
+        data={this.props.data}
+        layout={this.props.layout}
         config={config}
         useResizeHandler={true}
         style={{ width: '100%' }}
-        onHover={this.onHover}
-        onUnhover={this.onUnhover}
+        onHover={this.props.onHover}
+        onUnhover={this.props.onUnhover}
       />
     );
   }

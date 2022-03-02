@@ -884,8 +884,8 @@ class ParallelCoordinatesPlotConst extends React.Component {
         id="parallel-coordinates-plot"
         ref={this.myRef}
         divId={this.divId}
-        data={data}
-        layout={layout}
+        data={this.props.data}
+        layout={this.props.layout}
         config={config}
         useResizeHandler={true}
         style={{ width: '100%' }}

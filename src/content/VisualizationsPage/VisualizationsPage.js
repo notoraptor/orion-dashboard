@@ -1,28 +1,21 @@
 import React from 'react';
-import { Application32, Globe32, PersonFavorite32 } from '@carbon/icons-react';
-import { PlotSection, PlotBox } from './PlotBox';
-import { RegretPlot, RegretConst } from './RegretPlot';
+import { RegretConst } from './RegretPlot';
 import { LocalParameterImportancePlot } from './LocalParameterImportancePlot';
-import {
-  ParallelCoordinatesPlot,
-  ParallelCoordinatesPlotConst,
-} from './ParallelCoordinatesPlot';
+import { ParallelCoordinatesPlotConst } from './ParallelCoordinatesPlot';
 import Plotly from 'plotly.js-cartesian-dist-min';
-
-const on_hover = data => {
-  // Find PCP plot, and call hover.
-  // Lets first force fetch it.
-  console.log(data['points'][0]['customdata'][0]);
-  console.log(pcp.myRef.current);
-  console.log(pcp.myRef.current.plotlyService);
-};
-
-const test = new RegretConst({ onHover: on_hover });
-const pcp = new ParallelCoordinatesPlotConst({ onHover: on_hover });
+import { BackendContext } from '../../BackendContext';
+import { Backend } from '../../utils/queryServer';
 
 class PlotGrid extends React.Component {
+  static contextType = BackendContext;
   constructor(props) {
     super(props);
+    this.state = {
+      experiment: null,
+      regret: false,
+      parallel_coordinates: false,
+      lpi: false,
+    };
     this.id = 'plot-grid'; //props.id;
   }
 
@@ -59,75 +52,121 @@ class PlotGrid extends React.Component {
 
   render() {
     return (
-      <div class="bx--grid bx--grid--full-width">
-        <div class="bx--row">
-          <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-            <div class="bx--tile plot-tile">
-              <RegretConst
-                ref={node => {
-                  this.graphNode1 = node;
-                }}
-                divId={`plot-${this.id}-1`}
-                onHover={hover => this.onHover({ hover, plotIndex: 1 })}
-                onUnhover={unhover => this.onHover({ unhover, plotIndex: 1 })}
-              />
-            </div>
+      <div className="bx--grid bx--grid--full-width">
+        <div className="bx--row">
+          <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
+            <div className="bx--tile plot-tile">{this.renderRegret()}</div>
           </div>
-          <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-            <div class="bx--tile plot-tile">
-              <ParallelCoordinatesPlotConst
-                onRestyle={restyle => this.onRestyle({ restyle, plotIndex: 2 })}
-              />
+          <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
+            <div className="bx--tile plot-tile">
+              {this.renderParallelCoordinates()}
             </div>
           </div>
         </div>
-        <div class="bx--row">
-          <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-            <a class="bx--tile plot-tile">
-              <LocalParameterImportancePlot />
-            </a>
+        <div className="bx--row">
+          <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
+            <div className="bx--tile plot-tile">{this.renderLPI()}</div>
           </div>
         </div>
       </div>
     );
   }
+  renderRegret() {
+    if (this.state.regret === null)
+      return `Loading regret visualization for experiment: ${
+        this.state.experiment
+      } ...`;
+    if (this.state.regret === false) return `Nothing to display`;
+    return (
+      <RegretConst
+        data={this.state.regret.data}
+        layout={this.state.regret.layout}
+        ref={node => {
+          this.graphNode1 = node;
+        }}
+        divId={`plot-${this.id}-1`}
+        onHover={hover => this.onHover({ hover, plotIndex: 1 })}
+        onUnhover={unhover => this.onHover({ unhover, plotIndex: 1 })}
+      />
+    );
+  }
+  renderParallelCoordinates() {
+    if (this.state.parallel_coordinates === null)
+      return `Loading parallel coordinates visualization for experiment: ${
+        this.state.experiment
+      } ...`;
+    if (this.state.parallel_coordinates === false) return 'Nothing to display';
+    return (
+      <ParallelCoordinatesPlotConst
+        data={this.state.parallel_coordinates.data}
+        layout={this.state.parallel_coordinates.layout}
+        onRestyle={restyle => this.onRestyle({ restyle, plotIndex: 2 })}
+      />
+    );
+  }
+  renderLPI() {
+    if (this.state.lpi === null)
+      return `Loading LPI visualization for experiment: ${
+        this.state.experiment
+      }`;
+    if (this.state.lpi === false) return 'Nothing to display';
+    return (
+      <LocalParameterImportancePlot
+        data={this.state.lpi.data}
+        layout={this.state.lpi.layout}
+      />
+    );
+  }
+  async componentDidMount() {
+    const experiment = this.context.experiment;
+    if (experiment !== null) {
+      console.log(`mount ${this.context.experiment}`);
+      await this.loadBackendData(experiment);
+    }
+  }
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    const experiment = this.context.experiment;
+    if (this.state.experiment !== experiment) {
+      console.log(`update ${this.context.experiment}`);
+      if (experiment === null) {
+        this.setState({ experiment, regret: null, parallel_coordinates: null });
+      } else {
+        await this.loadBackendData(experiment);
+      }
+    }
+  }
+  async loadBackendData(experiment) {
+    const backend = new Backend(this.context.address);
+    let regret = false;
+    let parallel_coordinates = false;
+    let lpi = false;
+    try {
+      regret = await backend.query(`plots/regret/${experiment}`);
+      console.log('regret done ' + experiment);
+    } catch (error) {
+      regret = false;
+      console.log('regret fail ' + experiment);
+    }
+    try {
+      parallel_coordinates = await backend.query(
+        `plots/parallel_coordinates/${experiment}`
+      );
+      console.log('pc done ' + experiment);
+    } catch (error) {
+      parallel_coordinates = false;
+      console.log('pc fail ' + experiment);
+    }
+    try {
+      lpi = await backend.query(`plots/lpi/${experiment}`);
+      console.log('LPI done ' + experiment);
+    } catch (error) {
+      lpi = false;
+      console.log('LPI fail ' + experiment);
+    }
+    this.setState({ experiment, regret, parallel_coordinates, lpi });
+  }
 }
 
-const VisualizationsPage = PlotGrid; // ().render();
-
-// const VisualizationsPage = () => {
-//   return  (
-// <div class="bx--grid bx--grid--full-width">
-//   <div class="bx--row">
-//     <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-//         <div class='bx--tile plot-tile'>{ test.render() }</div>
-//     </div>
-//     <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-//         <div class='bx--tile plot-tile'>{ pcp.render() }</div>
-//     </div>
-//   </div>
-//   <div class="bx--row">
-//     <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-//         <a class='bx--tile plot-tile'><LocalParameterImportancePlot/></a>
-//     </div>
-//   </div>
-// </div>)};
-
-//        <PlotSection heading="The Principles" className="visualizations-page__r1">
-//          <PlotBox
-//            heading="Regret"
-//            body=<RegretPlot/>
-//          />
-//          <PlotBox
-//            heading="Carbon is Open"
-//            body="It's a distributed effort, guided by the principles of the open-source movement. Carbon's users are also it's makers, and everyone is encouraged to contribute."
-//            icon={<PersonFavorite32/>}
-//          />
-//          <PlotBox
-//            heading="Carbon is Open"
-//            body="It's a distributed effort, guided by the principles of the open-source movement. Carbon's users are also it's makers, and everyone is encouraged to contribute."
-//            icon={<PersonFavorite32/>}
-//          />
-//      </PlotSection>
+const VisualizationsPage = PlotGrid;
 
 export default VisualizationsPage;
