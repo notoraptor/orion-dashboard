@@ -6,6 +6,7 @@ import { BackendContext } from '../../BackendContext';
 import { Backend } from '../../utils/queryServer';
 
 class PlotGrid extends React.Component {
+  // Use BackendContext to retrieve current selected experiment.
   static contextType = BackendContext;
   constructor(props) {
     super(props);
@@ -74,6 +75,7 @@ class PlotGrid extends React.Component {
     );
   }
   componentDidMount() {
+    // We must check if there is an experiment to visualize
     const experiment = this.context.experiment;
     if (experiment !== null) {
       console.log(`Mounting experiment: ${this.context.experiment}`);
@@ -81,6 +83,7 @@ class PlotGrid extends React.Component {
     }
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
+    // We must check if selected experiment changed
     const experiment = this.context.experiment;
     if (this.state.experiment !== experiment) {
       console.log(`Updating experiment: ${this.context.experiment}`);
@@ -97,6 +100,7 @@ class PlotGrid extends React.Component {
     }
   }
   loadBackendData(experiment) {
+    // Load experiments data for plotting
     this.setState(
       { experiment, regret: null, parallel_coordinates: null, lpi: null },
       () => {

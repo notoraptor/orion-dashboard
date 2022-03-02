@@ -14,6 +14,7 @@ import { BackendContext, DEFAULT_BACKEND } from './BackendContext';
 class App extends Component {
   constructor(props) {
     super(props);
+    // Store selected experiment here
     this.state = { experiment: null };
     this.onSelectExperiment = this.onSelectExperiment.bind(this);
   }
@@ -23,6 +24,8 @@ class App extends Component {
         <BackendContext.Provider
           value={{
             address: DEFAULT_BACKEND,
+            // Pass selected experiment as React context
+            // so that it is available in route components
             experiment: this.state.experiment,
           }}>
           <TutorialHeader />
