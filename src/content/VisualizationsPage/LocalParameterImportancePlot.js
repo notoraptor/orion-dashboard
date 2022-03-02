@@ -8,6 +8,7 @@ const config = {
 export const LocalParameterImportancePlot = props => {
   return (
     <Plot
+      id="lpi-plot"
       data={props.data}
       layout={props.layout}
       config={config}

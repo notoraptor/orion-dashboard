@@ -2,7 +2,6 @@ import React from 'react';
 import { RegretConst } from './RegretPlot';
 import { LocalParameterImportancePlot } from './LocalParameterImportancePlot';
 import { ParallelCoordinatesPlotConst } from './ParallelCoordinatesPlot';
-import Plotly from 'plotly.js-cartesian-dist-min';
 import { BackendContext } from '../../BackendContext';
 import { Backend } from '../../utils/queryServer';
 
@@ -15,44 +14,12 @@ class PlotGrid extends React.Component {
       regret: false,
       parallel_coordinates: false,
       lpi: false,
+      keyCount: 0, // key to force re-rendering
     };
-    this.id = 'plot-grid'; //props.id;
   }
-
-  onRestyle({ restyle, plotIndex }) {
-    console.log('restyle', plotIndex);
-    console.log(restyle);
-  }
-
-  onHover({ hover, unhover, plotIndex }) {
-    const oppositeNode = plotIndex === 2 ? this.graphNode1 : this.graphNode2;
-    //var oppositeNode;
-    //if( plotIndex === 1 ){
-    //    oppositeNode = this.graphNode2;
-    //}else{
-    //    oppositeNode = this.graphNode1;
-    //}
-
-    // TODO: Maybe it does not trigger because oppositeNode.el is undefined?
-
-    //console.log(oppositeNode.el);
-    //Plotly.Fx.hover(oppositeNode.divId, hover.event);
-
-    console.log('do smtg?');
-    console.log(hover);
-    if (hover && oppositeNode && oppositeNode.divId) {
-      console.log('hover opposite');
-      Plotly.Fx.hover(oppositeNode.divId, hover.event);
-    } else if (unhover && oppositeNode && oppositeNode.divId) {
-      console.log('unhover opposite');
-      Plotly.Fx.unhover(oppositeNode.divId, unhover.event);
-    }
-    console.log('no?');
-  }
-
   render() {
     return (
-      <div className="bx--grid bx--grid--full-width">
+      <div className="bx--grid bx--grid--full-width" key={this.state.keyCount}>
         <div className="bx--row">
           <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
             <div className="bx--tile plot-tile">{this.renderRegret()}</div>
@@ -81,12 +48,6 @@ class PlotGrid extends React.Component {
       <RegretConst
         data={this.state.regret.data}
         layout={this.state.regret.layout}
-        ref={node => {
-          this.graphNode1 = node;
-        }}
-        divId={`plot-${this.id}-1`}
-        onHover={hover => this.onHover({ hover, plotIndex: 1 })}
-        onUnhover={unhover => this.onHover({ unhover, plotIndex: 1 })}
       />
     );
   }
@@ -100,7 +61,6 @@ class PlotGrid extends React.Component {
       <ParallelCoordinatesPlotConst
         data={this.state.parallel_coordinates.data}
         layout={this.state.parallel_coordinates.layout}
-        onRestyle={restyle => this.onRestyle({ restyle, plotIndex: 2 })}
       />
     );
   }
@@ -129,7 +89,12 @@ class PlotGrid extends React.Component {
     if (this.state.experiment !== experiment) {
       console.log(`update ${this.context.experiment}`);
       if (experiment === null) {
-        this.setState({ experiment, regret: null, parallel_coordinates: null });
+        this.setState({
+          experiment,
+          regret: false,
+          parallel_coordinates: false,
+          lpi: false,
+        });
       } else {
         await this.loadBackendData(experiment);
       }
@@ -137,9 +102,9 @@ class PlotGrid extends React.Component {
   }
   async loadBackendData(experiment) {
     const backend = new Backend(this.context.address);
-    let regret = false;
-    let parallel_coordinates = false;
-    let lpi = false;
+    let regret;
+    let parallel_coordinates;
+    let lpi;
     try {
       regret = await backend.query(`plots/regret/${experiment}`);
       console.log('regret done ' + experiment);
@@ -163,7 +128,8 @@ class PlotGrid extends React.Component {
       lpi = false;
       console.log('LPI fail ' + experiment);
     }
-    this.setState({ experiment, regret, parallel_coordinates, lpi });
+    const keyCount = this.state.keyCount + 1;
+    this.setState({ experiment, regret, parallel_coordinates, lpi, keyCount });
   }
 }
 
