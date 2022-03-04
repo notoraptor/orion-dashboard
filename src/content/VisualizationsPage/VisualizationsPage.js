@@ -65,7 +65,7 @@ class PlotGrid extends React.Component {
   }
   renderLPI() {
     if (this.state.lpi === null)
-      return `Loading LPI plot for: ${this.state.experiment}`;
+      return `Loading LPI plot for: ${this.state.experiment} ...`;
     if (this.state.lpi === false) return 'Nothing to display';
     return (
       <LocalParameterImportancePlot
