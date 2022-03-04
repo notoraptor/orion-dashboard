@@ -78,7 +78,6 @@ class PlotGrid extends React.Component {
     // We must check if there is an experiment to visualize
     const experiment = this.context.experiment;
     if (experiment !== null) {
-      console.log(`Mounting experiment: ${this.context.experiment}`);
       this.loadBackendData(experiment);
     }
   }
@@ -86,7 +85,6 @@ class PlotGrid extends React.Component {
     // We must check if selected experiment changed
     const experiment = this.context.experiment;
     if (this.state.experiment !== experiment) {
-      console.log(`Updating experiment: ${this.context.experiment}`);
       if (experiment === null) {
         this.setState({
           experiment,

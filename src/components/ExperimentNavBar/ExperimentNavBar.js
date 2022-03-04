@@ -87,6 +87,7 @@ export class ExperimentNavBar extends React.Component {
         />
         <StructuredListCell>
           <span
+            title={`unselect experiment '${experiment}'`}
             style={{
               visibility:
                 this.context.experiment === experiment ? 'visible' : 'hidden',

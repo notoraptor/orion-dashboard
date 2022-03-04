@@ -44,7 +44,6 @@ class App extends Component {
     );
   }
   onSelectExperiment(experiment) {
-    console.log(`Experiment selected: ${experiment}`);
     this.setState({ experiment });
   }
 }
