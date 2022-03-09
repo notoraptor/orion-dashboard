@@ -4,6 +4,7 @@ import { LocalParameterImportancePlot } from './LocalParameterImportancePlot';
 import { ParallelCoordinatesPlotConst } from './ParallelCoordinatesPlot';
 import { BackendContext } from '../../BackendContext';
 import { Backend } from '../../utils/queryServer';
+import Plotly from 'plotly.js-cartesian-dist-min';
 
 class PlotGrid extends React.Component {
   // Use BackendContext to retrieve current selected experiment.
@@ -23,7 +24,9 @@ class PlotGrid extends React.Component {
       <div className="bx--grid bx--grid--full-width" key={this.state.keyCount}>
         <div className="bx--row">
           <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
-            <div className="bx--tile plot-tile">{this.renderRegret()}</div>
+            <div className="bx--tile plot-tile">
+              {this.renderRegret('regret-plot', this.onRegretHover)}
+            </div>
           </div>
           <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
             <div className="bx--tile plot-tile">
@@ -35,18 +38,25 @@ class PlotGrid extends React.Component {
           <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
             <div className="bx--tile plot-tile">{this.renderLPI()}</div>
           </div>
+          <div className="bx--col-sm-16 bx--col-md-8 bx--col-lg-8 bx--col-xlg-8">
+            <div className="bx--tile plot-tile">
+              {this.renderRegret('regret-plot-2')}
+            </div>
+          </div>
         </div>
       </div>
     );
   }
-  renderRegret() {
+  renderRegret(divId, onHover) {
     if (this.state.regret === null)
       return `Loading regret plot for: ${this.state.experiment} ...`;
     if (this.state.regret === false) return `Nothing to display`;
     return (
       <RegretConst
+        divId={divId}
         data={this.state.regret.data}
         layout={this.state.regret.layout}
+        onHover={onHover}
       />
     );
   }
@@ -128,6 +138,9 @@ class PlotGrid extends React.Component {
         );
       }
     );
+  }
+  onRegretHover(hoverEvent) {
+    Plotly.Fx.hover('regret-plot-2', hoverEvent.points);
   }
 }
 

@@ -13,12 +13,13 @@ export class RegretConst extends React.Component {
   render() {
     return (
       <Plot
-        id="regret-plot"
+        divId={this.props.divId}
         data={this.props.data}
         layout={this.props.layout}
         config={config}
         useResizeHandler={true}
         style={{ width: '100%' }}
+        onHover={this.props.onHover}
       />
     );
   }
