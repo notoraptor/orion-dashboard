@@ -94,6 +94,15 @@ test('Test if we can select and unselect experiments', async () => {
   expect(span.tagName.toLowerCase()).toBe('span');
   fireEvent.click(span);
   expect((await screen.findAllByText(/Nothing to display/)).length).toBe(3);
+  expect(
+    screen.queryByText(/Regret for experiment '2-dim-shape-exp'/)
+  ).toBeNull();
+  expect(
+    screen.queryByText(
+      /Parallel Coordinates PLot for experiment '2-dim-shape-exp'/i
+    )
+  ).toBeNull();
+  expect(screen.queryByText(/LPI for experiment '2-dim-shape-exp'/)).toBeNull();
 
   // re-select experiment and check if plots are loaded
   fireEvent.click(experiment);
