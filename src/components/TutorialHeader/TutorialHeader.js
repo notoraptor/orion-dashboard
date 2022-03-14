@@ -20,20 +20,20 @@ const TutorialHeader = () => (
           onClick={onClickSideNavExpand}
           isActive={isSideNavExpanded}
         />
-        <HeaderName element={Link} to="/" prefix="Oríon">
+        <HeaderName element={Link} to="/" prefix="Oríon" replace>
           Dashboard
         </HeaderName>
         <HeaderNavigation aria-label="Oríon Dashboard">
-          <HeaderMenuItem element={Link} to="/status">
+          <HeaderMenuItem element={Link} to="/status" replace>
             Status
           </HeaderMenuItem>
-          <HeaderMenuItem element={Link} to="/visualizations">
+          <HeaderMenuItem element={Link} to="/visualizations" replace>
             Visualizations
           </HeaderMenuItem>
-          <HeaderMenuItem element={Link} to="/database">
+          <HeaderMenuItem element={Link} to="/database" replace>
             Database
           </HeaderMenuItem>
-          <HeaderMenuItem element={Link} to="/configuration">
+          <HeaderMenuItem element={Link} to="/configuration" replace>
             Configuration
           </HeaderMenuItem>
         </HeaderNavigation>

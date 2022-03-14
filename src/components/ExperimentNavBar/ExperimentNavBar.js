@@ -22,12 +22,14 @@ const { prefix } = settings;
 export class ExperimentNavBar extends React.Component {
   static contextType = BackendContext;
   constructor(props) {
+    // prop: onSelectExperiment: function(experiment)
     super(props);
     this.state = {
       experiments: null,
       search: '',
     };
     this.onSearch = this.onSearch.bind(this);
+    this.onUnselect = this.onUnselect.bind(this);
   }
   render() {
     return (
@@ -77,18 +79,28 @@ export class ExperimentNavBar extends React.Component {
     return experiments.map((experiment, i) => (
       <StructuredListRow label key={`row-${i}`}>
         <StructuredListInput
-          id={`row-${i}`}
+          id={`select-experiment-${i}`}
           value={`row-${i}`}
           title={`row-${i}`}
-          name="row-0"
-          defaultChecked={!i || null}
+          name="select-experiment"
+          onChange={() => this.props.onSelectExperiment(experiment)}
         />
         <StructuredListCell>
-          <CloseFilled16
-            className={`${prefix}--structured-list-svg`}
-            aria-label="unselect experiment">
-            <title>select an option</title>
-          </CloseFilled16>
+          <span
+            title={`unselect experiment '${experiment}'`}
+            style={{
+              visibility:
+                this.context.experiment === experiment ? 'visible' : 'hidden',
+            }}
+            onClick={event =>
+              this.onUnselect(event, experiment, `select-experiment-${i}`)
+            }>
+            <CloseFilled16
+              className={`${prefix}--structured-list-svg`}
+              aria-label="unselect experiment">
+              <title>unselect experiment</title>
+            </CloseFilled16>
+          </span>
         </StructuredListCell>
         <StructuredListCell>
           [{i + 1}] {experiment}
@@ -128,6 +140,28 @@ export class ExperimentNavBar extends React.Component {
   }
   onSearch(event) {
     this.setState({ search: event.target.value.toLowerCase() });
+  }
+  onUnselect(event, experiment, inputID) {
+    /*
+     * By default, a click anywhere in experiment line (including on cross icon)
+     * will select the experiment.
+     * Here, we want to click on cross icon to deselect experiment.
+     * So, we must prevent click on cross icon to act like click on experiment
+     * line.
+     * To do that, we call event's preventDefault() method to cancel default
+     * behavior.
+     * */
+    event.preventDefault();
+    /*
+     * Uncheck hidden radiobutton input associated to selected experiment.
+     * This is necessary to allow to immediately click again to experiment
+     * line to re-select experiment.
+     * */
+    document.getElementById(inputID).checked = false;
+    /*
+     * Tell global interface to unselect experiment
+     * */
+    this.props.onSelectExperiment(null);
   }
 }
 
