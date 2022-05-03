@@ -4,6 +4,8 @@ import {
   HeaderContainer,
   HeaderName,
   HeaderMenuButton,
+  HeaderNavigation,
+  HeaderMenuItem,
   SkipToContent,
 } from 'carbon-components-react';
 import { Link } from 'react-router-dom';
@@ -21,6 +23,11 @@ const BenchmarkHeader = () => (
         <HeaderName element={Link} to="/" prefix="Oríon" replace>
           Dashboard
         </HeaderName>
+        <HeaderNavigation aria-label="Oríon Dashboard">
+          <HeaderMenuItem element={Link} to="/" replace>
+            <strong>Experiments</strong>
+          </HeaderMenuItem>
+        </HeaderNavigation>
       </Header>
     )}
   />

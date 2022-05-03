@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Experiments } from './experiments/Experiments';
 import { Benchmarks } from './benchmarks/Benchmarks';
+import { Route, Switch } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -11,20 +12,12 @@ class App extends Component {
     this.selectBenchmarks = this.selectBenchmarks.bind(this);
   }
   render() {
-    if (this.state.page === 'experiments') {
-      return <Experiments />;
-    } else if (this.state.page === 'benchmarks') {
-      return <Benchmarks />;
-    } else {
-      return (
-        <div>
-          <button onClick={this.selectExperiments}>
-            Experiments dashboard
-          </button>
-          <button onClick={this.selectBenchmarks}>Benchmarks dashboard</button>
-        </div>
-      );
-    }
+    return (
+      <Switch>
+        <Route exact path="/" component={Experiments} />
+        <Route path="/benchmarks" component={Benchmarks} />
+      </Switch>
+    );
   }
   selectExperiments() {
     this.setState({ page: 'experiments' });

@@ -1,0 +1,7 @@
+.span-link {
+  cursor: pointer;
+}
+
+.bx--side-nav.experiment-navbar {
+  overflow: auto;
+}

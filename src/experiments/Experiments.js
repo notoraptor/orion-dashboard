@@ -15,8 +15,9 @@ export class Experiments extends Component {
   constructor(props) {
     super(props);
     // Store selected experiment here
-    this.state = { experiment: null };
+    this.state = { experiment: null, page: 'landing' };
     this.onSelectExperiment = this.onSelectExperiment.bind(this);
+    this.onSelectPage = this.onSelectPage.bind(this);
   }
   render() {
     return (
@@ -28,22 +29,33 @@ export class Experiments extends Component {
             // so that it is available in route components
             experiment: this.state.experiment,
           }}>
-          <TutorialHeader />
+          <TutorialHeader onSelectPage={this.onSelectPage} />
           <ExperimentNavBar onSelectExperiment={this.onSelectExperiment} />
-          <Content>
-            <Switch>
-              <Route exact path="/" component={LandingPage} />
-              <Route path="/status" component={StatusPage} />
-              <Route path="/visualizations" component={VisualizationsPage} />
-              <Route path="/database" component={DatabasePage} />
-              <Route path="/configuration" component={ConfigurationPage} />
-            </Switch>
-          </Content>
+          <Content>{this.renderPage()}</Content>
         </BackendContext.Provider>
       </>
     );
   }
+  renderPage() {
+    switch (this.state.page) {
+      case 'landing':
+        return <LandingPage />;
+      case 'status':
+        return <StatusPage />;
+      case 'visualizations':
+        return <VisualizationsPage />;
+      case 'database':
+        return <DatabasePage />;
+      case 'configuration':
+        return <ConfigurationPage />;
+      default:
+        break;
+    }
+  }
   onSelectExperiment(experiment) {
     this.setState({ experiment });
+  }
+  onSelectPage(page) {
+    this.setState({ page });
   }
 }

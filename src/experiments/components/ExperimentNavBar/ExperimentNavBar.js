@@ -34,6 +34,7 @@ export class ExperimentNavBar extends React.Component {
   render() {
     return (
       <SideNav
+        className="experiment-navbar"
         isFixedNav
         expanded={true}
         isChildOfHeader={false}
@@ -103,7 +104,9 @@ export class ExperimentNavBar extends React.Component {
           </span>
         </StructuredListCell>
         <StructuredListCell>
-          [{i + 1}] {experiment}
+          <span title={experiment}>
+            [{i + 1}] {experiment}
+          </span>
         </StructuredListCell>
         <StructuredListCell>
           <ProgressBar>
