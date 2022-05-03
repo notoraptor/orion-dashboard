@@ -3,7 +3,7 @@ import { RegretConst } from './RegretPlot';
 import { LocalParameterImportancePlot } from './LocalParameterImportancePlot';
 import { ParallelCoordinatesPlotConst } from './ParallelCoordinatesPlot';
 import { BackendContext } from '../../BackendContext';
-import { Backend } from '../../utils/queryServer';
+import { Backend } from '../../../utils/queryServer';
 
 class PlotGrid extends React.Component {
   // Use BackendContext to retrieve current selected experiment.

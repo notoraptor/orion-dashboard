@@ -1,7 +1,7 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { CloseFilled16 } from '@carbon/icons-react';
-import { Backend } from '../../utils/queryServer';
+import { Backend } from '../../../utils/queryServer';
 import { BackendContext } from '../../BackendContext';
 
 import {

@@ -1,50 +1,36 @@
 import React, { Component } from 'react';
-import './app.scss';
-import { Content } from 'carbon-components-react';
-import TutorialHeader from './components/TutorialHeader';
-import ExperimentNavBar from './components/ExperimentNavBar';
-import { Route, Switch } from 'react-router-dom';
-import LandingPage from './content/LandingPage';
-import StatusPage from './content/StatusPage';
-import VisualizationsPage from './content/VisualizationsPage';
-import DatabasePage from './content/DatabasePage';
-import ConfigurationPage from './content/ConfigurationPage';
-import { BackendContext, DEFAULT_BACKEND } from './BackendContext';
+import { Experiments } from './experiments/Experiments';
+import { Benchmarks } from './benchmarks/Benchmarks';
 
 class App extends Component {
   constructor(props) {
     super(props);
     // Store selected experiment here
-    this.state = { experiment: null };
-    this.onSelectExperiment = this.onSelectExperiment.bind(this);
+    this.state = { page: null };
+    this.selectExperiments = this.selectExperiments.bind(this);
+    this.selectBenchmarks = this.selectBenchmarks.bind(this);
   }
   render() {
-    return (
-      <>
-        <BackendContext.Provider
-          value={{
-            address: DEFAULT_BACKEND,
-            // Pass selected experiment as React context
-            // so that it is available in route components
-            experiment: this.state.experiment,
-          }}>
-          <TutorialHeader />
-          <ExperimentNavBar onSelectExperiment={this.onSelectExperiment} />
-          <Content>
-            <Switch>
-              <Route exact path="/" component={LandingPage} />
-              <Route path="/status" component={StatusPage} />
-              <Route path="/visualizations" component={VisualizationsPage} />
-              <Route path="/database" component={DatabasePage} />
-              <Route path="/configuration" component={ConfigurationPage} />
-            </Switch>
-          </Content>
-        </BackendContext.Provider>
-      </>
-    );
+    if (this.state.page === 'experiments') {
+      return <Experiments />;
+    } else if (this.state.page === 'benchmarks') {
+      return <Benchmarks />;
+    } else {
+      return (
+        <div>
+          <button onClick={this.selectExperiments}>
+            Experiments dashboard
+          </button>
+          <button onClick={this.selectBenchmarks}>Benchmarks dashboard</button>
+        </div>
+      );
+    }
   }
-  onSelectExperiment(experiment) {
-    this.setState({ experiment });
+  selectExperiments() {
+    this.setState({ page: 'experiments' });
+  }
+  selectBenchmarks() {
+    this.setState({ page: 'benchmarks' });
   }
 }
 

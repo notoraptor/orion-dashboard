@@ -1,7 +1,7 @@
 import React from 'react';
-import ExperimentNavBar from '../components/ExperimentNavBar';
+import ExperimentNavBar from '../experiments/components/ExperimentNavBar';
 import { render, waitFor, screen } from '@testing-library/react';
-import { BackendContext } from '../BackendContext';
+import { BackendContext } from '../experiments/BackendContext';
 import userEvent from '@testing-library/user-event';
 
 // Since I updated dependencies in package.json, this seems necessary.
