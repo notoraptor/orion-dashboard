@@ -20,7 +20,7 @@ const TutorialHeader = props => (
           onClick={onClickSideNavExpand}
           isActive={isSideNavExpanded}
         />
-        <HeaderName>
+        <HeaderName prefix="Orion">
           <span
             className="span-link"
             onClick={() => props.onSelectPage('landing')}>
