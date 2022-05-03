@@ -1,6 +1,6 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import { DEFAULT_BACKEND } from '../../BackendContext';
+import { DEFAULT_BACKEND } from '../../../utils/queryServer';
 import { Backend } from '../../../utils/queryServer';
 
 class PlotData {

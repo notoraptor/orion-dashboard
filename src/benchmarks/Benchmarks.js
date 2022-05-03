@@ -4,7 +4,7 @@ import { Content } from 'carbon-components-react';
 import BenchmarkHeader from './components/BenchmarkHeader';
 import BenchmarkNavBar from './components/BenchmarkNavBar';
 import BenchmarkVisualizationsPage from './content/BenchmarkVisualizationsPage';
-import { DEFAULT_BACKEND } from './BackendContext';
+import { DEFAULT_BACKEND } from '../utils/queryServer';
 import { Backend } from '../utils/queryServer';
 
 export class Benchmarks extends Component {

@@ -8,7 +8,8 @@ import StatusPage from './content/StatusPage';
 import VisualizationsPage from './content/VisualizationsPage';
 import DatabasePage from './content/DatabasePage';
 import ConfigurationPage from './content/ConfigurationPage';
-import { BackendContext, DEFAULT_BACKEND } from './BackendContext';
+import { BackendContext } from './BackendContext';
+import { DEFAULT_BACKEND } from '../utils/queryServer';
 
 export class Experiments extends Component {
   constructor(props) {

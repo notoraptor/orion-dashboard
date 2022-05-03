@@ -1,5 +1,4 @@
-import { Backend } from '../utils/queryServer';
-import { DEFAULT_BACKEND } from '../experiments/BackendContext';
+import { Backend, DEFAULT_BACKEND } from '../utils/queryServer';
 
 test('test backend call', () => {
   expect.assertions(3);
