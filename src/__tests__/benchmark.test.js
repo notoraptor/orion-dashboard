@@ -7,8 +7,11 @@ import {
   queryByText,
   findByText,
   screen,
+  fireEvent,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+/* Use MemoryRouter to isolate history for each test */
+import { MemoryRouter } from 'react-router-dom';
 
 // Since I updated dependencies in package.json, this seems necessary.
 beforeEach(() => {
@@ -273,11 +276,13 @@ const AAWA2_no_random = [
 ];
 
 test('Test select benchmark', async () => {
-  render(
-    <Router>
-      <App />
-    </Router>
-  );
+  render(<App />, { wrapper: MemoryRouter });
+
+  // Switch to benchmarks page
+  const menu = await screen.findByText(/Benchmarks/);
+  fireEvent.click(menu);
+  await sleep(1000);
+
   expect(await screen.findByText(/No benchmark selected/)).toBeInTheDocument();
   // Get benchmark search field
   const benchmarkField = await screen.findByPlaceholderText(
@@ -352,11 +357,13 @@ test('Test select benchmark', async () => {
 });
 
 test('Test (de)select assessments', async () => {
-  render(
-    <Router>
-      <App />
-    </Router>
-  );
+  render(<App />, { wrapper: MemoryRouter });
+
+  // Switch to benchmarks page
+  const menu = await screen.findByText(/Benchmarks/);
+  fireEvent.click(menu);
+  await sleep(1000);
+
   expect(await screen.findByText(/No benchmark selected/)).toBeInTheDocument();
   // Get benchmark search field
   const benchmarkField = await screen.findByPlaceholderText(
@@ -398,11 +405,13 @@ test('Test (de)select assessments', async () => {
 });
 
 test('Test (de)select tasks', async () => {
-  render(
-    <Router>
-      <App />
-    </Router>
-  );
+  render(<App />, { wrapper: MemoryRouter });
+
+  // Switch to benchmarks page
+  const menu = await screen.findByText(/Benchmarks/);
+  fireEvent.click(menu);
+  await sleep(1000);
+
   expect(await screen.findByText(/No benchmark selected/)).toBeInTheDocument();
   // Get benchmark search field
   const benchmarkField = await screen.findByPlaceholderText(
@@ -444,11 +453,13 @@ test('Test (de)select tasks', async () => {
 });
 
 test('Test (de)select algorithms', async () => {
-  render(
-    <Router>
-      <App />
-    </Router>
-  );
+  render(<App />, { wrapper: MemoryRouter });
+
+  // Switch to benchmarks page
+  const menu = await screen.findByText(/Benchmarks/);
+  fireEvent.click(menu);
+  await sleep(1000);
+
   expect(await screen.findByText(/No benchmark selected/)).toBeInTheDocument();
   // Get benchmark search field
   const benchmarkField = await screen.findByPlaceholderText(

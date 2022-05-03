@@ -8,6 +8,7 @@ import { DEFAULT_BACKEND } from '../utils/queryServer';
 import { Backend } from '../utils/queryServer';
 
 export class Benchmarks extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     // Store selected experiment here
@@ -56,16 +57,24 @@ export class Benchmarks extends Component {
     );
   }
   componentDidMount() {
+    this._isMounted = true;
     const backend = new Backend(DEFAULT_BACKEND);
     backend
       .query('benchmarks')
       .then(benchmarks => {
-        this.setState({ benchmarks });
+        if (this._isMounted) {
+          this.setState({ benchmarks });
+        }
       })
       .catch(error => {
         console.error(error);
-        this.setState({ benchmarks: [] });
+        if (this._isMounted) {
+          this.setState({ benchmarks: [] });
+        }
       });
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
   onSelectBenchmark(benchmark, algorithms, tasks, assessments) {
     this.setState({ benchmark, algorithms, tasks, assessments });

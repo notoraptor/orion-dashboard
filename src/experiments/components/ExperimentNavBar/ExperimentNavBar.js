@@ -20,6 +20,7 @@ import { settings } from 'carbon-components';
 const { prefix } = settings;
 
 export class ExperimentNavBar extends React.Component {
+  _isMounted = false;
   static contextType = BackendContext;
   constructor(props) {
     // prop: onSelectExperiment: function(experiment)
@@ -129,18 +130,27 @@ export class ExperimentNavBar extends React.Component {
     );
   }
   componentDidMount() {
+    this._isMounted = true;
     const backend = new Backend(this.context.address);
     backend
       .query('experiments')
       .then(results => {
         const experiments = results.map(experiment => experiment.name);
         experiments.sort();
-        this.setState({ experiments });
+        if (this._isMounted) {
+          this.setState({ experiments });
+        }
       })
       .catch(error => {
-        this.setState({ experiments: [] });
+        if (this._isMounted) {
+          this.setState({ experiments: [] });
+        }
       });
   }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   onSearch(event) {
     this.setState({ search: event.target.value.toLowerCase() });
   }
