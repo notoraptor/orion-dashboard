@@ -105,9 +105,7 @@ export class ExperimentNavBar extends React.Component {
           </span>
         </StructuredListCell>
         <StructuredListCell>
-          <span title={experiment}>
-            [{i + 1}] {experiment}
-          </span>
+          <span title={experiment}>{experiment}</span>
         </StructuredListCell>
         <StructuredListCell>
           <ProgressBar>
