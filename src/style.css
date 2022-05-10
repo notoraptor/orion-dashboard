@@ -1,7 +1,7 @@
 .span-link {
   cursor: pointer;
 }
-
-.bx--side-nav.experiment-navbar {
+.experiments-wrapper {
+  flex-grow: 1;
   overflow: auto;
 }

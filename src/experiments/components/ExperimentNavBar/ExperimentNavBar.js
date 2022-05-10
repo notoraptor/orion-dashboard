@@ -40,18 +40,20 @@ export class ExperimentNavBar extends React.Component {
         expanded={true}
         isChildOfHeader={false}
         aria-label="Side navigation">
-        <StructuredListWrapper selection>
-          <StructuredListHead>
-            <StructuredListRow head>
-              <StructuredListCell head>{''}</StructuredListCell>
-              <StructuredListCell head>Experiment</StructuredListCell>
-              <StructuredListCell head>Status</StructuredListCell>
-            </StructuredListRow>
-          </StructuredListHead>
-          <StructuredListBody>
-            {this.renderExperimentsList()}
-          </StructuredListBody>
-        </StructuredListWrapper>
+        <div className="experiments-wrapper">
+          <StructuredListWrapper selection>
+            <StructuredListHead>
+              <StructuredListRow head>
+                <StructuredListCell head>{''}</StructuredListCell>
+                <StructuredListCell head>Experiment</StructuredListCell>
+                <StructuredListCell head>Status</StructuredListCell>
+              </StructuredListRow>
+            </StructuredListHead>
+            <StructuredListBody>
+              {this.renderExperimentsList()}
+            </StructuredListBody>
+          </StructuredListWrapper>
+        </div>
         <Search
           placeholder="Search experiment"
           labelText="Search experiment"
