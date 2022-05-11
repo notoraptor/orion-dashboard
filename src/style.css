@@ -5,6 +5,15 @@
   flex-grow: 1;
   overflow: auto;
 }
+.experiments-list {
+  table-layout: fixed;
+}
+.experiment-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 70%;
+}
 .bx--side-nav.experiment-navbar,
 .bx--side-nav.benchmark-navbar {
   z-index: 7000;

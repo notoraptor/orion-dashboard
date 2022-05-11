@@ -41,11 +41,12 @@ export class ExperimentNavBar extends React.Component {
         isChildOfHeader={false}
         aria-label="Side navigation">
         <div className="experiments-wrapper">
-          <StructuredListWrapper selection>
+          <StructuredListWrapper className="experiments-list" selection>
             <StructuredListHead>
               <StructuredListRow head>
-                <StructuredListCell head>{''}</StructuredListCell>
-                <StructuredListCell head>Experiment</StructuredListCell>
+                <StructuredListCell className="experiment-cell" head>
+                  Experiment
+                </StructuredListCell>
                 <StructuredListCell head>Status</StructuredListCell>
               </StructuredListRow>
             </StructuredListHead>
@@ -80,16 +81,16 @@ export class ExperimentNavBar extends React.Component {
       // No string to search, display all experiments
       experiments = this.state.experiments;
     }
-    return experiments.map((experiment, i) => (
-      <StructuredListRow label key={`row-${i}`}>
+    return experiments.map(experiment => (
+      <StructuredListRow label key={`row-${experiment}`}>
         <StructuredListInput
-          id={`select-experiment-${i}`}
-          value={`row-${i}`}
-          title={`row-${i}`}
+          id={`select-experiment-${experiment}`}
+          value={`row-${experiment}`}
+          title={`row-${experiment}`}
           name="select-experiment"
           onChange={() => this.props.onSelectExperiment(experiment)}
         />
-        <StructuredListCell>
+        <StructuredListCell className="experiment-cell">
           <span
             title={`unselect experiment '${experiment}'`}
             style={{
@@ -97,16 +98,18 @@ export class ExperimentNavBar extends React.Component {
                 this.context.experiment === experiment ? 'visible' : 'hidden',
             }}
             onClick={event =>
-              this.onUnselect(event, experiment, `select-experiment-${i}`)
+              this.onUnselect(
+                event,
+                experiment,
+                `select-experiment-${experiment}`
+              )
             }>
             <CloseFilled16
               className={`${prefix}--structured-list-svg`}
               aria-label="unselect experiment">
               <title>unselect experiment</title>
             </CloseFilled16>
-          </span>
-        </StructuredListCell>
-        <StructuredListCell>
+          </span>{' '}
           <span title={experiment}>{experiment}</span>
         </StructuredListCell>
         <StructuredListCell>
@@ -123,7 +126,6 @@ export class ExperimentNavBar extends React.Component {
   renderMessageRow(message) {
     return (
       <StructuredListRow>
-        <StructuredListCell />
         <StructuredListCell>{message}</StructuredListCell>
         <StructuredListCell />
       </StructuredListRow>
@@ -152,7 +154,7 @@ export class ExperimentNavBar extends React.Component {
   }
 
   onSearch(event) {
-    this.setState({ search: event.target.value.toLowerCase() });
+    this.setState({ search: (event.target.value || '').toLowerCase() });
   }
   onUnselect(event, experiment, inputID) {
     /*
