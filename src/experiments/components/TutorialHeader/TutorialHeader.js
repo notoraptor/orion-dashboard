@@ -67,7 +67,7 @@ const TutorialHeader = props => (
                 ? 'benchmarks (selected)'
                 : 'benchmarks'
             }
-            menuLinkName="Benchmarks ...">
+            menuLinkName="Benchmarks">
             <HeaderMenuItem
               title="Go to benchmarks visualizations"
               element={Link}
