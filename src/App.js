@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Experiments } from './experiments/Experiments';
-import { Benchmarks } from './benchmarks/Benchmarks';
+import { ExperimentsWithRouter } from './experiments/Experiments';
+import { BenchmarksWithRouter } from './benchmarks/Benchmarks';
 import { Route, Switch } from 'react-router-dom';
 
 class App extends Component {
@@ -14,8 +14,14 @@ class App extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/" component={Experiments} />
-        <Route path="/benchmarks" component={Benchmarks} />
+        <Route exact path="/" component={ExperimentsWithRouter} />
+        <Route exact path="/benchmarks" component={BenchmarksWithRouter} />
+        <Route
+          exact
+          path="/benchmarks/:page"
+          component={BenchmarksWithRouter}
+        />
+        <Route path="/:page" component={ExperimentsWithRouter} />
       </Switch>
     );
   }

@@ -279,7 +279,7 @@ test('Test select benchmark', async () => {
   render(<App />, { wrapper: MemoryRouter });
 
   // Switch to benchmarks page
-  const menu = await screen.findByText(/Benchmarks/);
+  const menu = await screen.findByTitle(/Go to benchmarks visualizations/);
   fireEvent.click(menu);
   await sleep(1000);
 
@@ -360,7 +360,7 @@ test('Test (de)select assessments', async () => {
   render(<App />, { wrapper: MemoryRouter });
 
   // Switch to benchmarks page
-  const menu = await screen.findByText(/Benchmarks/);
+  const menu = await screen.findByTitle(/Go to benchmarks visualizations/);
   fireEvent.click(menu);
   await sleep(1000);
 
@@ -408,7 +408,7 @@ test('Test (de)select tasks', async () => {
   render(<App />, { wrapper: MemoryRouter });
 
   // Switch to benchmarks page
-  const menu = await screen.findByText(/Benchmarks/);
+  const menu = await screen.findByTitle(/Go to benchmarks visualizations/);
   fireEvent.click(menu);
   await sleep(1000);
 
@@ -456,7 +456,7 @@ test('Test (de)select algorithms', async () => {
   render(<App />, { wrapper: MemoryRouter });
 
   // Switch to benchmarks page
-  const menu = await screen.findByText(/Benchmarks/);
+  const menu = await screen.findByTitle(/Go to benchmarks visualizations/);
   fireEvent.click(menu);
   await sleep(1000);
 

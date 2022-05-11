@@ -37,6 +37,7 @@ export class BenchmarkNavBar extends React.Component {
       ''
     ) : (
       <SideNav
+        className="benchmark-navbar"
         isFixedNav
         expanded={true}
         isChildOfHeader={false}

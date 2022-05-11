@@ -41,7 +41,7 @@ test('Test if we switch to visualization page', async () => {
   expect(screen.queryByText(/Nothing to display/)).toBeNull();
 
   // Get visualizations page link
-  const menu = screen.queryByText(/Visualizations/);
+  const menu = screen.queryByTitle(/Go to experiments visualizations/);
   expect(menu).toBeInTheDocument();
 
   // CLick on visualizations page link
@@ -63,7 +63,7 @@ test('Test if we can select and unselect experiments', async () => {
   expect(experiment).toBeInTheDocument();
 
   // Switch to visualizations page
-  const menu = screen.queryByText(/Visualizations/);
+  const menu = screen.queryByTitle(/Go to experiments visualizations/);
   fireEvent.click(menu);
   expect((await screen.findAllByText(/Nothing to display/)).length).toBe(3);
 

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import './app.scss';
 import { Content } from 'carbon-components-react';
-import BenchmarkHeader from './components/BenchmarkHeader';
 import BenchmarkNavBar from './components/BenchmarkNavBar';
 import BenchmarkVisualizationsPage from './content/BenchmarkVisualizationsPage';
+import { BenchmarkStatusPage } from './content/BenchmarkStatusPage/BenchmarkStatusPage';
+import { BenchmarkDatabasePage } from './content/BenchmarkDatabasePage/BenchmarkDatabasePage';
+import { BenchmarkConfigurationPage } from './content/BenchmarkConfigurationPage/BenchmarkConfigurationPage';
+import TutorialHeader from '../experiments/components/TutorialHeader';
+
 import { DEFAULT_BACKEND } from '../utils/queryServer';
 import { Backend } from '../utils/queryServer';
+import { withRouter } from 'react-router-dom';
 
-export class Benchmarks extends Component {
+class Benchmarks extends Component {
   _isMounted = false;
   constructor(props) {
     super(props);
@@ -24,7 +29,7 @@ export class Benchmarks extends Component {
   render() {
     return (
       <>
-        <BenchmarkHeader />
+        <TutorialHeader dashboard="benchmarks" />
         {this.state.benchmarks === null ? (
           <Content>
             <h4>Loading benchmarks ...</h4>
@@ -43,18 +48,32 @@ export class Benchmarks extends Component {
               assessments={this.state.assessments}
               onSelectBenchmark={this.onSelectBenchmark}
             />
-            <Content>
-              <BenchmarkVisualizationsPage
-                benchmark={this.state.benchmark}
-                algorithms={this.state.algorithms}
-                tasks={this.state.tasks}
-                assessments={this.state.assessments}
-              />
-            </Content>
+            <Content>{this.renderPage()}</Content>
           </>
         )}
       </>
     );
+  }
+  renderPage() {
+    switch (this.props.match.params.page || 'visualizations') {
+      case 'status':
+        return <BenchmarkStatusPage />;
+      case 'database':
+        return <BenchmarkDatabasePage />;
+      case 'configuration':
+        return <BenchmarkConfigurationPage />;
+      case 'visualizations':
+        return (
+          <BenchmarkVisualizationsPage
+            benchmark={this.state.benchmark}
+            algorithms={this.state.algorithms}
+            tasks={this.state.tasks}
+            assessments={this.state.assessments}
+          />
+        );
+      default:
+        break;
+    }
   }
   componentDidMount() {
     this._isMounted = true;
@@ -80,3 +99,5 @@ export class Benchmarks extends Component {
     this.setState({ benchmark, algorithms, tasks, assessments });
   }
 }
+
+export const BenchmarksWithRouter = withRouter(Benchmarks);

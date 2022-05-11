@@ -5,21 +5,15 @@ const config = {
   responsive: true,
 };
 
-export class ParallelCoordinatesPlotConst extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Plot
-        id="parallel-coordinates-plot"
-        data={this.props.data}
-        layout={this.props.layout}
-        config={config}
-        useResizeHandler={true}
-        style={{ width: '100%' }}
-      />
-    );
-  }
+export function ParallelCoordinatesPlotConst(props) {
+  return (
+    <Plot
+      id="parallel-coordinates-plot"
+      data={props.data}
+      layout={props.layout}
+      config={config}
+      useResizeHandler={true}
+      style={{ width: '100%' }}
+    />
+  );
 }

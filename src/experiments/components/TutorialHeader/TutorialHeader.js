@@ -3,6 +3,7 @@ import {
   Header,
   HeaderContainer,
   HeaderName,
+  HeaderMenu,
   HeaderNavigation,
   HeaderMenuButton,
   HeaderMenuItem,
@@ -20,45 +21,82 @@ const TutorialHeader = props => (
           onClick={onClickSideNavExpand}
           isActive={isSideNavExpanded}
         />
-        <HeaderName prefix="Orion">
-          <span
-            className="span-link"
-            onClick={() => props.onSelectPage('landing')}>
-            Dashboard
-          </span>
+        <HeaderName element={Link} to="/" prefix="Oríon" replace>
+          Dashboard
         </HeaderName>
         <HeaderNavigation aria-label="Oríon Dashboard">
-          <HeaderMenuItem>
-            <span
-              className="span-link"
-              onClick={() => props.onSelectPage('status')}>
-              Status
-            </span>
-          </HeaderMenuItem>
-          <HeaderMenuItem>
-            <span
-              className="span-link"
-              onClick={() => props.onSelectPage('visualizations')}>
+          <HeaderMenu
+            aria-label={
+              props.dashboard === 'experiments'
+                ? 'experiments (selected)'
+                : 'experiments'
+            }
+            menuLinkName="Experiments">
+            <HeaderMenuItem
+              title="Go to experiments visualizations"
+              element={Link}
+              to="/visualizations"
+              replace>
               Visualizations
-            </span>
-          </HeaderMenuItem>
-          <HeaderMenuItem>
-            <span
-              className="span-link"
-              onClick={() => props.onSelectPage('database')}>
+            </HeaderMenuItem>
+            <HeaderMenuItem
+              title="Go to experiments status"
+              element={Link}
+              to="/status"
+              replace>
+              Status
+            </HeaderMenuItem>
+            <HeaderMenuItem
+              title="Go to experiments database"
+              element={Link}
+              to="/database"
+              replace>
               Database
-            </span>
-          </HeaderMenuItem>
-          <HeaderMenuItem>
-            <span
-              className="span-link"
-              onClick={() => props.onSelectPage('configuration')}>
+            </HeaderMenuItem>
+            <HeaderMenuItem
+              title="Go to experiments configuration"
+              element={Link}
+              to="/configuration"
+              replace>
               Configuration
-            </span>
-          </HeaderMenuItem>
-          <HeaderMenuItem element={Link} to="/benchmarks" replace>
-            <strong>Benchmarks</strong>
-          </HeaderMenuItem>
+            </HeaderMenuItem>
+          </HeaderMenu>
+          <HeaderMenu
+            aria-label={
+              props.dashboard === 'benchmarks'
+                ? 'benchmarks (selected)'
+                : 'benchmarks'
+            }
+            menuLinkName="Benchmarks ...">
+            <HeaderMenuItem
+              title="Go to benchmarks visualizations"
+              element={Link}
+              to="/benchmarks/visualizations"
+              replace>
+              Visualizations
+            </HeaderMenuItem>
+            <HeaderMenuItem
+              title="Go to benchmarks status"
+              element={Link}
+              to="/benchmarks/status"
+              replace>
+              Status
+            </HeaderMenuItem>
+            <HeaderMenuItem
+              title="Go to benchmarks database"
+              element={Link}
+              to="/benchmarks/database"
+              replace>
+              Database
+            </HeaderMenuItem>
+            <HeaderMenuItem
+              title="Go to benchmarks configuration"
+              element={Link}
+              to="/benchmarks/configuration"
+              replace>
+              Configuration
+            </HeaderMenuItem>
+          </HeaderMenu>
         </HeaderNavigation>
       </Header>
     )}

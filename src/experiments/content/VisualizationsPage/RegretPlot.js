@@ -5,21 +5,15 @@ const config = {
   responsive: true,
 };
 
-export class RegretConst extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Plot
-        id="regret-plot"
-        data={this.props.data}
-        layout={this.props.layout}
-        config={config}
-        useResizeHandler={true}
-        style={{ width: '100%' }}
-      />
-    );
-  }
+export function RegretConst(props) {
+  return (
+    <Plot
+      id="regret-plot"
+      data={props.data}
+      layout={props.layout}
+      config={config}
+      useResizeHandler={true}
+      style={{ width: '100%' }}
+    />
+  );
 }
