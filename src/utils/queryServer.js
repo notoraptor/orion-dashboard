@@ -57,4 +57,5 @@ export class Backend {
 }
 
 /** Default address value. */
-export const DEFAULT_BACKEND = 'http://127.0.0.1:8000';
+export const DEFAULT_BACKEND =
+  window.__ORION_BACKEND__ || 'http://127.0.0.1:8000';
